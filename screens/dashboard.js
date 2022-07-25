@@ -1,10 +1,14 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import MyTabs from '../routes/mytabs';
 
 export default function Dashboard() {
   return (
-    <View >
-    <Text>dashboard</Text>
-  </View>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
+   
+
+    </View>
+
   )
 }

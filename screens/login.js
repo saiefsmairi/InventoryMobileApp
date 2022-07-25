@@ -1,8 +1,9 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image, TextInput, ScrollView, Button, Keyboard } from 'react-native';
 import { Input } from '../components/input';
+import MyTabs from '../routes/mytabs';
 
-export default function Login() {
+export default function Login({ navigation }) {
     const [inputs, setInputs] = React.useState({ email: '', password: '' });
     const [errors, setErrors] = React.useState({});
     const [loading, setLoading] = React.useState(false);
@@ -18,11 +19,11 @@ export default function Login() {
         if (!inputs.password) {
             handleError('Please write password', 'password');
             isValid = false;
-        }   /*
-        console.log(email)
+        }
         if (isValid) {
+            navigation.navigate('dashboard')
             //  login();
-        } */
+        }
     };
 
     const handleOnchange = (text, input) => {
@@ -35,6 +36,7 @@ export default function Login() {
 
     return (
         <View style={styles.container}>
+
             <ScrollView contentContainerStyle={{ paddingTop: 50, paddingHorizontal: 20 }}>
 
                 <View style={styles.container2}>
@@ -55,7 +57,7 @@ export default function Login() {
                         label='Email' placeholder="Enter your email address" iconName="email" />
 
                     <Input onChangeText={text => handleOnchange(text, 'password')}
-                        onFocus={() => handleError(null, 'password')} 
+                        onFocus={() => handleError(null, 'password')}
                         error={errors.password}
                         label='Password' password placeholder="Enter your password" iconName="lock" />
                 </View>
