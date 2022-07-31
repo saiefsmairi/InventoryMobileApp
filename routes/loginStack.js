@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import dashboard from '../screens/dashboard'
 import login from '../screens/login'
 import MyTabs from '../routes/mytabs';
+import QrCodeScanner from '../screens/QrCodeScanner';
 
 
 
@@ -37,7 +38,14 @@ function MyStack() {
 
                 }}
             />
-
+            <Stack.Screen
+                name="QrCodeScanner"
+                component={QrCodeScanner}
+                options={{
+                    title: 'Scan Products',
+                    headerTitleAlign: 'center',
+                }}
+            />
 
 
         </Stack.Navigator>

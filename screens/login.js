@@ -1,12 +1,16 @@
-import React from 'react'
-import { StyleSheet, Text, View, Image, TextInput, ScrollView, Button, Keyboard } from 'react-native';
+import React, { useEffect } from 'react'
+import { StyleSheet, Text, View, Image, TextInput, ScrollView, Button, Keyboard, Alert } from 'react-native';
 import { Input } from '../components/input';
 import MyTabs from '../routes/mytabs';
+import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Example from '../components/example';
 
 export default function Login({ navigation }) {
     const [inputs, setInputs] = React.useState({ email: '', password: '' });
     const [errors, setErrors] = React.useState({});
     const [loading, setLoading] = React.useState(false);
+    const [failedLogin, setfailedLogin] = React.useState(false);
 
     const validate = async () => {
         console.log(errors)
@@ -21,10 +25,45 @@ export default function Login({ navigation }) {
             isValid = false;
         }
         if (isValid) {
-            navigation.navigate('dashboard')
-            //  login();
+
+            login(inputs);
         }
     };
+
+    // Login user
+    const login = async (inputs) => {
+        try {
+            const response = await axios.post("http://192.168.1.14:5000/users/" + 'login', inputs)
+            const jsonValue = JSON.stringify(response.data)
+            await AsyncStorage.setItem('user', jsonValue)
+            navigation.navigate('dashboard')
+        } catch (e) {
+            setfailedLogin(true)
+
+            console.log("save to storage failed")
+        }
+
+    }
+
+    const getDataFromStorage = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('user')
+            return jsonValue != null ? JSON.parse(jsonValue) : null;
+        } catch (e) {
+            console.log("error getDataFromStorage")
+        }
+    }
+
+
+
+    useEffect(() => {
+        getDataFromStorage().then((val) => {
+            if (val) {
+                navigation.navigate('dashboard')
+            }
+        });
+    }, [])
+
 
     const handleOnchange = (text, input) => {
         setInputs(prevState => ({ ...prevState, [input]: text }));
@@ -68,7 +107,13 @@ export default function Login({ navigation }) {
                         color="#2196F3"
                         accessibilityLabel="Log in"
                     />
+
+
                 </View>
+
+                {failedLogin && (
+                    <Example />
+                )}
             </ScrollView>
         </View>
 
