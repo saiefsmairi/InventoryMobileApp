@@ -63,17 +63,17 @@ export default function QrCodeScanner({ route, navigation }) {
   const sendProducts = async () => {
     formData.codeabarProd = text
     formData.idemployee = employee._id
-    formData.zone = zone._id
+    formData.zone = zone.zone._id
     console.log(formData)
-
-    axios.post("http://192.168.1.14:5000/product", formData).then(function (response) {
+console.log(zone)
+     axios.post("http://192.168.1.14:5000/product", formData).then(function (response) {
       console.log(response)
       setScanned(false)
       setText('Not yet scanned')
     })
       .catch(function (error) {
         console.log(error)
-      })
+      }) 
   };
 
 

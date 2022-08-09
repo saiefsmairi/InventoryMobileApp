@@ -36,7 +36,7 @@ export default function Login({ navigation }) {
             const response = await axios.post("http://192.168.1.14:5000/users/" + 'login', inputs)
             const jsonValue = JSON.stringify(response.data)
             await AsyncStorage.setItem('user', jsonValue)
-            navigation.navigate('dashboard')
+            navigation.navigate('AffectedZonesList')
         } catch (e) {
             setfailedLogin(true)
 
@@ -59,7 +59,7 @@ export default function Login({ navigation }) {
     useEffect(() => {
         getDataFromStorage().then((val) => {
             if (val) {
-                navigation.navigate('dashboard')
+                navigation.navigate('AffectedZonesList')
             }
         });
     }, [])

@@ -3,33 +3,44 @@ import { StyleSheet, View, TouchableOpacity, ScrollView, RefreshControl } from '
 import { Box, Heading, AspectRatio, Image, Text, Center, HStack, Stack, NativeBaseProvider, } from "native-base";
 import { CardComponent } from '../components/CardComponent';
 import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function AffectedZonesList({ navigation }) {
+export default function AffectedZonesList({ route,navigation }) {
   const [TabAffecatation, setTabAffecatation] = useState([])
   const [refreshing, setRefreshing] = React.useState(false);
+  const [employee, setemployee] = React.useState('');
 
+  const getDataFromStorage = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('user')
+      setemployee(JSON.parse(jsonValue)._id)
+      findAffectationByEmployee(JSON.parse(jsonValue)._id)
+    } catch (e) {
+      console.log("error getDataFromStorage")
+    }
+  }
 
-  function findAffectationByEmployee() {
-    axios.get("http://192.168.1.14:5000/affectation/findAffectationByEmployee/62e29cfe6d2f15138424bdd8").then((res) => {
-      // console.log(res.data)
+  function findAffectationByEmployee(idemp) {
+    console.log(idemp)
+    axios.get("http://192.168.1.14:5000/affectation/findAffectationByEmployee/"+idemp).then((res) => {
+      console.log(res.data)
       setTabAffecatation(res.data)
+      setRefreshing(false)
     }).catch(function (error) {
       console.log(error)
     })
   }
 
   useEffect(() => {
-
-    findAffectationByEmployee()
+    getDataFromStorage()
+   // findAffectationByEmployee()
   }, [])
 
-  const wait = (timeout) => {
-    return new Promise(resolve => setTimeout(resolve, timeout));
-  }
+
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    axios.get("http://192.168.1.14:5000/affectation/findAffectationByEmployee/62e29cfe6d2f15138424bdd8").then((res) => {
+    axios.get("http://192.168.1.14:5000/affectation/findAffectationByEmployee/"+employee._id).then((res) => {
       // console.log(res.data)
       setTabAffecatation(res.data)
       setRefreshing(false)
@@ -49,8 +60,7 @@ export default function AffectedZonesList({ navigation }) {
       />
     } >
       <Center flex={1}>
-
-        {TabAffecatation.map((x, index) => (
+        {TabAffecatation?.map((x, index) => (
           <CardComponent key={index} zone={x} name={x.zone.name} companyname={x.company.companyname} datedebut={x.Datedebut} datefin={x.Datefin} navigation={navigation} />
         ))}
       </Center>
