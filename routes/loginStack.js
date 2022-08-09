@@ -5,6 +5,7 @@ import dashboard from '../screens/dashboard'
 import login from '../screens/login'
 import MyTabs from '../routes/mytabs';
 import QrCodeScanner from '../screens/QrCodeScanner';
+import AffectedZonesList from '../screens/AffectedZonesList'
 
 
 
@@ -29,8 +30,8 @@ function MyStack() {
 
             />
             <Stack.Screen
-                name="dashboard"
-                component={MyTabs}
+                name="AffectedZonesList"
+                component={AffectedZonesList}
                 options={{
                     title: 'My Dashboard',
                     headerTitleAlign: 'center',
@@ -42,8 +43,9 @@ function MyStack() {
                 name="QrCodeScanner"
                 component={QrCodeScanner}
                 options={{
-                    title: 'Scan Products',
+                    title: 'Scan Productss',
                     headerTitleAlign: 'center',
+
                 }}
             />
 

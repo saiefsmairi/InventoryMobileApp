@@ -22,13 +22,7 @@ function MyTabs() {
           ),
         }}
       />
-      <Tab.Screen name="QrCodeScanner" component={QrCodeScanner}
-        options={{
-          headerShown: false,
-          tabBarShowLabel: false,
-          tabBarIcon: ({ color, size }) => (
-            <AntDesign name="barcode" size={size} color={color} />),
-        }} />
+ 
     </Tab.Navigator>
   );
 }
