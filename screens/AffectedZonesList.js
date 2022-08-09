@@ -36,7 +36,7 @@ export default function AffectedZonesList({ route,navigation }) {
    // findAffectationByEmployee()
   }, [])
 
-
+ 
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -61,7 +61,7 @@ export default function AffectedZonesList({ route,navigation }) {
     } >
       <Center flex={1}>
         {TabAffecatation?.map((x, index) => (
-          <CardComponent key={index} zone={x} name={x.zone.name} companyname={x.company.companyname} datedebut={x.Datedebut} datefin={x.Datefin} navigation={navigation} />
+          <CardComponent key={index} zone={x} name={x.zone.name} companyname={x.company.companyname} datedebut={x.Datedebut} datefin={x.Datefin} company={x.company} navigation={navigation} />
         ))}
       </Center>
 

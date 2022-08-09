@@ -2,8 +2,8 @@ import React from "react";
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Box, Heading, AspectRatio, Image, Text, Center, HStack, Stack, NativeBaseProvider } from "native-base";
 
-export const CardComponent = ({zone, name, companyname, datedebut, datefin, navigation }) => {
-  const onPress = () => navigation.navigate('QrCodeScanner',  {zone})
+export const CardComponent = ({zone, name, companyname, datedebut, datefin, navigation ,company}) => {
+  const onPress = () => navigation.navigate('QrCodeScanner',  {zone,company})
 
 
   return (
