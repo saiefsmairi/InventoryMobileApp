@@ -73,14 +73,21 @@ export default function QrCodeScanner({ route, navigation }) {
 
   const sendProducts = async () => {
     //event hedhi tji fel home 
-    socket.emit("newUser", employee);
+    console.log("********")
+
     console.log(company.AdminCompany)
 
     socket.emit("sendNotification", {
-      senderName: employee,
+      //sender name and receiver are  id not names
+      senderName: employee._id,
       receiverName: company.AdminCompany,
-      zone: zone._id,
-      text: "added a new product to",
+      senderFirstName: employee.firstName,
+      senderLastName: employee.lastName,
+      zone: zone.zone._id,
+      zonename: zone.zone.name,
+      date: new Date(),
+
+      text: "A new product has been added to ",
     });
 
 
