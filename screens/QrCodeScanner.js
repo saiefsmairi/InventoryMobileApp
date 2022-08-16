@@ -4,13 +4,17 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Input, Box, Center, NativeBaseProvider } from "native-base";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios'
+import { io } from "socket.io-client";
 
 export default function QrCodeScanner({ route, navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState('Not yet scanned')
   const [zone, setzone] = useState(route.params.zone);
+  const [company, setcompany] = useState(route.params.company);
+
   const [employee, setemployee] = useState('');
+  const [socket, setSocket] = useState(null);
 
   const [formData, setFormData] = useState({
     codeabarProd: "",
@@ -21,6 +25,8 @@ export default function QrCodeScanner({ route, navigation }) {
     idemployee: ""
   });
 
+
+
   const getDataFromStorage = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('user')
@@ -30,13 +36,18 @@ export default function QrCodeScanner({ route, navigation }) {
     }
   }
 
-
   const askForCameraPermission = () => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === 'granted');
     })()
   }
+
+  useEffect(() => {
+    setSocket(io("http://192.168.1.14:4000"));
+  }, []);
+
+
   // Request Camera Permission
   useEffect(() => {
     getDataFromStorage().then((val) => {
@@ -45,7 +56,7 @@ export default function QrCodeScanner({ route, navigation }) {
     //  console.log(route.params.zone)
     setzone(route.params.zone)
     askForCameraPermission();
-  });
+  }, []);
 
 
 
@@ -61,19 +72,35 @@ export default function QrCodeScanner({ route, navigation }) {
   };
 
   const sendProducts = async () => {
+    //event hedhi tji fel home 
+    console.log("********")
+
+    console.log(company.AdminCompany)
+
+    socket.emit("sendNotification", {
+      //sender name and receiver are  id not names
+      senderName: employee._id,
+      receiverName: company.AdminCompany,
+      senderFirstName: employee.firstName,
+      senderLastName: employee.lastName,
+      zone: zone.zone._id,
+      zonename: zone.zone.name,
+      date: new Date(),
+
+      text: "A new product has been added to ",
+    });
+
+
     formData.codeabarProd = text
     formData.idemployee = employee._id
     formData.zone = zone.zone._id
-    console.log(formData)
-console.log(zone)
-     axios.post("http://192.168.1.14:5000/product", formData).then(function (response) {
-      console.log(response)
+    axios.post("http://192.168.1.14:5000/product", formData).then(function (response) {
       setScanned(false)
       setText('Not yet scanned')
     })
       .catch(function (error) {
         console.log(error)
-      }) 
+      })
   };
 
 
