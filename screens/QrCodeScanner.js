@@ -94,7 +94,9 @@ export default function QrCodeScanner({ route, navigation }) {
     formData.codeabarProd = text
     formData.idemployee = employee._id
     formData.zone = zone.zone._id
-    axios.post("http://192.168.1.14:5000/product", formData).then(function (response) {
+    formData.company = zone.company
+
+    axios.post("http://192.168.1.14:5000/product/codebarFindProducts/test1", formData).then(function (response) {
       setScanned(false)
       setText('Not yet scanned')
     })
@@ -133,10 +135,12 @@ export default function QrCodeScanner({ route, navigation }) {
       {scanned &&
         <Box alignItems="center" style={styles.boxstyle}>
           <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />
-          <Input mx="3" placeholder="Name" w="75%" maxWidth="300px" onChangeText={text => handleOnchange(text, 'name')} name="name" />
-          <Input mx="3" keyboardType="numeric" placeholder="Quantity" w="75%" maxWidth="300px" onChangeText={text => handleOnchange(text, 'quantity')} name="quantity" />
-          <Input mx="3" keyboardType="numeric" placeholder="Price" w="75%" maxWidth="300px" onChangeText={text => handleOnchange(text, 'price')} name="price" />
 
+          <Input mx="3" keyboardType="numeric" placeholder="Quantity" w="75%" maxWidth="300px" onChangeText={text => handleOnchange(text, 'quantity')} name="quantity" />
+{/* 
+          <Input mx="3" placeholder="Name" w="75%" maxWidth="300px" onChangeText={text => handleOnchange(text, 'name')} name="name" />
+          <Input mx="3" keyboardType="numeric" placeholder="Price" w="75%" maxWidth="300px" onChangeText={text => handleOnchange(text, 'price')} name="price" />
+ */}
           <Button title={'Send'} onPress={sendProducts} color='blue' />
 
         </Box>
