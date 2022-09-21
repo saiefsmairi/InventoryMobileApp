@@ -43,7 +43,7 @@ function MyStack() {
                 name="QrCodeScanner"
                 component={QrCodeScanner}
                 options={{
-                    title: 'Scan Productss',
+                    title: 'Scan Products',
                     headerTitleAlign: 'center',
 
                 }}
